@@ -246,17 +246,17 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
     width:100%;
   }
   .scroll-card{
-    flex:0 0 calc(220px + (var(--card-progress, 0) * 280px));
+    flex:0 0 calc(110px + (var(--card-progress, 0) * 140px));
     transition:flex-basis 0.35s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.25s ease;
   }
-  .scroll-card:hover{flex-basis:calc(220px + (var(--card-progress, 0) * 280px));}
+  .scroll-card:hover{flex-basis:calc(110px + (var(--card-progress, 0) * 140px));}
   .scroll-card img{
-    height:calc(280px + (var(--card-progress, 0) * 120px));
+    height:calc(140px + (var(--card-progress, 0) * 60px));
     transition:height 0.35s cubic-bezier(0.22,0.61,0.36,1);
   }
-  .scroll-card:hover img{height:calc(280px + (var(--card-progress, 0) * 120px));}
-  .scroll-card.vert img{height:calc(360px + (var(--card-progress, 0) * 160px));}
-  .scroll-card.vert:hover img{height:calc(360px + (var(--card-progress, 0) * 160px));}
+  .scroll-card:hover img{height:calc(140px + (var(--card-progress, 0) * 60px));}
+  .scroll-card.vert img{height:calc(180px + (var(--card-progress, 0) * 80px));}
+  .scroll-card.vert:hover img{height:calc(180px + (var(--card-progress, 0) * 80px));}
   .scroll-card,.clickable,.lb-close{cursor:auto;}
   body{cursor:auto;}
   #cursor{display:none;}
