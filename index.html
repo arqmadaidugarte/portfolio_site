@@ -231,40 +231,32 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   .pipeline-track::before{display:none;}
   #contact{flex-direction:column;gap:3rem;align-items:flex-start;}
   .grid-2{grid-template-columns:1fr;}
-  .scroll-strip{
-    scroll-snap-type:x mandatory;
-    scroll-behavior:smooth;
-    overscroll-behavior-x:contain;
-    -webkit-overflow-scrolling:touch;
+  .project-page{overflow-x:hidden;}
+  .proj-hero{min-height:100svh;height:auto;}
+  .proj-hero-content{padding:1.5rem;}
+  .proj-meta{gap:1rem;}
+  .proj-nav{padding:0 1.5rem;gap:1.25rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .proj-nav::-webkit-scrollbar{display:none;}
+  .proj-nav-link{white-space:nowrap;flex:0 0 auto;}
+  .project-page > div[style*="justify-content:space-between"]{
+    padding:1.5rem !important;
+    flex-direction:column;
+  }
+  .project-page > div[style*="justify-content:space-between"] > button{
+    width:100%;
   }
   .scroll-card{
-    flex:0 0 calc(140px + (var(--card-progress, 0) * 92px));
-    scroll-snap-align:center;
-    scroll-snap-stop:always;
-    transition:flex-basis 0.18s cubic-bezier(0.45,0,0.55,1), box-shadow 0.18s cubic-bezier(0.45,0,0.55,1), border-color 0.18s ease;
+    flex:0 0 calc(220px + (var(--card-progress, 0) * 280px));
+    transition:flex-basis 0.35s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.25s ease;
   }
-  .scroll-card:hover{flex-basis:calc(140px + (var(--card-progress, 0) * 92px));}
-  .scroll-card.is-centered{
-    --card-progress:1;
-    flex-basis:min(64vw,260px);
-    transition:flex-basis 0.42s cubic-bezier(0.45,0,0.55,1), box-shadow 0.42s cubic-bezier(0.45,0,0.55,1), border-color 0.42s ease;
-  }
+  .scroll-card:hover{flex-basis:calc(220px + (var(--card-progress, 0) * 280px));}
   .scroll-card img{
-    height:calc(240px + (var(--card-progress, 0) * 52px));
-    transition:height 0.18s cubic-bezier(0.45,0,0.55,1);
+    height:calc(280px + (var(--card-progress, 0) * 120px));
+    transition:height 0.35s cubic-bezier(0.22,0.61,0.36,1);
   }
-  .scroll-card:hover img{height:calc(240px + (var(--card-progress, 0) * 52px));}
-  .scroll-card.is-centered img{
-    height:320px;
-    transition:height 0.42s cubic-bezier(0.45,0,0.55,1);
-  }
-  .scroll-card.vert img{height:calc(300px + (var(--card-progress, 0) * 78px));}
-  .scroll-card.vert:hover img{height:calc(300px + (var(--card-progress, 0) * 78px));}
-  .scroll-card.vert.is-centered img{
-    height:430px;
-    transition:height 0.42s cubic-bezier(0.45,0,0.55,1);
-  }
-  .scroll-card.is-scrolling{will-change:flex-basis;}
+  .scroll-card:hover img{height:calc(280px + (var(--card-progress, 0) * 120px));}
+  .scroll-card.vert img{height:calc(360px + (var(--card-progress, 0) * 160px));}
+  .scroll-card.vert:hover img{height:calc(360px + (var(--card-progress, 0) * 160px));}
   .scroll-card,.clickable,.lb-close{cursor:auto;}
   body{cursor:auto;}
   #cursor{display:none;}
@@ -755,17 +747,13 @@ function updateCenteredScrollCard(strip,settled=false){
   const {cards,closestCard,centerX,activeRange}=getClosestScrollCard(strip);
   if(!cards.length) return;
 
-  cards.forEach(card=>card.classList.toggle('is-centered',settled && card===closestCard));
-
   cards.forEach(card=>{
     const rect=card.getBoundingClientRect();
     const cardCenter=rect.left+rect.width/2;
     const distance=Math.abs(cardCenter-centerX);
     const rawProgress=clamp(1-(distance/activeRange),0,1);
     const easedProgress=easeInOutSine(rawProgress);
-    const previewProgress = settled
-      ? (card===closestCard ? 1 : 0)
-      : (card===closestCard ? Math.min(0.92,easedProgress) : Math.min(0.16,easedProgress * 0.18));
+    const previewProgress = Math.min(0.92,easedProgress);
 
     card.style.setProperty('--card-progress',String(previewProgress));
   });
