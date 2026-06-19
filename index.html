@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madai Dugarte — Architect · Architectural Visualization</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0d0d0b;--gold:#b8924a;--gold-l:#d4aa6a;--paper:#f5f2ec;--muted:#8a8478;--muted2:#5a5650;--section-bg:#111110;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--paper);font-family:'DM Mono',monospace;font-weight:300;cursor:none;overflow-x:hidden;}
+
+/* CURSOR */
+#cursor{position:fixed;width:12px;height:12px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s;mix-blend-mode:difference;}
+#cursor.expand{width:40px;height:40px;}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9000;transition:opacity 0.8s ease;}
+#loader h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,5rem);font-weight:300;letter-spacing:0.3em;color:var(--paper);}
+#loader .sub{font-size:0.7rem;letter-spacing:0.4em;color:var(--gold);margin-top:1rem;text-transform:uppercase;}
+.loader-bar{width:200px;height:1px;background:var(--muted2);margin-top:3rem;overflow:hidden;}
+.loader-fill{height:100%;background:var(--gold);width:0%;animation:loadfill 1.8s ease forwards;}
+@keyframes loadfill{to{width:100%;}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 4rem;background:linear-gradient(to bottom,rgba(13,13,11,0.95) 0%,transparent 100%);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;letter-spacing:0.2em;color:var(--paper);text-decoration:none;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;}
+.nav-links a:hover{color:var(--gold);}
+
+/* HOME HERO */
+#home{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 4rem 5rem;position:relative;overflow:hidden;}
+.home-bg{position:absolute;inset:0;background:linear-gradient(135deg,#1a1610 0%,#0d0d0b 60%);}
+.home-grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(184,146,74,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(184,146,74,0.04) 1px,transparent 1px);background-size:80px 80px;}
+.home-content{position:relative;z-index:2;max-width:900px;}
+.home-eyebrow{font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;}
+.home-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,8vw,7rem);font-weight:300;line-height:1;letter-spacing:-0.02em;color:var(--paper);margin-bottom:2rem;}
+.home-title em{font-style:italic;color:var(--gold-l);}
+.home-desc{font-size:0.75rem;letter-spacing:0.1em;color:var(--muted);max-width:500px;line-height:2;margin-bottom:3rem;}
+.home-cta{display:inline-flex;align-items:center;gap:1rem;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:0.5rem;transition:gap 0.3s;}
+.home-cta:hover{gap:1.5rem;}
+
+/* FILTER + GRID */
+.filter-bar{display:flex;align-items:center;gap:0.5rem;padding:2rem 4rem;border-bottom:1px solid rgba(184,146,74,0.1);}
+.filter-label{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted2);margin-right:1rem;}
+.filter-btn{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid transparent;padding:0.4rem 1rem;cursor:none;transition:all 0.3s;}
+.filter-btn:hover,.filter-btn.active{color:var(--gold);border-color:rgba(184,146,74,0.3);}
+#projects{padding:0 4rem 6rem;}
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:2px;}
+.project-card{position:relative;overflow:hidden;aspect-ratio:16/10;cursor:none;}
+.project-card:first-child{grid-column:1/-1;aspect-ratio:21/9;}
+.project-card img{width:100%;height:100%;object-fit:cover;transition:transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);filter:brightness(0.75);}
+.project-card:hover img{transform:scale(1.04);filter:brightness(0.6);}
+.card-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem;}
+/* cambio 4: solo oscurecer el área de texto */
+.card-text-bg{display:inline-flex;flex-direction:column;gap:0.3rem;background:linear-gradient(to top,rgba(13,13,11,0.92) 0%,rgba(13,13,11,0.6) 60%,transparent 100%);padding:2rem 2rem 1rem;margin:-2.5rem;margin-top:auto;}
+.card-tag{font-size:0.58rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem;}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;color:var(--paper);margin-bottom:0.3rem;}
+.card-sub{font-size:0.6rem;letter-spacing:0.2em;color:var(--muted);}
+.card-arrow{position:absolute;top:2rem;right:2rem;width:40px;height:40px;border:1px solid rgba(184,146,74,0.4);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem;opacity:0;transform:translateY(10px);transition:opacity 0.3s,transform 0.3s;}
+.project-card:hover .card-arrow{opacity:1;transform:translateY(0);}
+
+/* ABOUT */
+#about{padding:8rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;border-top:1px solid rgba(184,146,74,0.1);}
+.section-label{font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;display:block;}
+.about-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:300;line-height:1.2;margin-bottom:2rem;color:var(--paper);}
+.about-text{font-size:0.75rem;line-height:2.2;color:var(--muted);margin-bottom:2.5rem;}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;border-top:1px solid rgba(184,146,74,0.15);padding-top:2rem;}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--gold);}
+.stat-label{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted2);margin-top:0.3rem;}
+.skills-block{margin-bottom:2.5rem;}
+.skills-title{font-size:0.6rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(184,146,74,0.2);}
+.skill-item{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.skill-name{font-size:0.7rem;color:var(--paper);}
+.skill-level{font-size:0.58rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;}
+
+/* PIPELINE */
+#pipeline{padding:6rem 4rem;border-top:1px solid rgba(184,146,74,0.1);background:var(--section-bg);}
+.pipeline-header{text-align:center;margin-bottom:4rem;}
+.pipeline-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:300;color:var(--paper);margin-top:1rem;}
+.pipeline-track{display:grid;grid-template-columns:repeat(4,1fr);position:relative;}
+.pipeline-track::before{content:'';position:absolute;top:2.2rem;left:12.5%;right:12.5%;height:1px;background:linear-gradient(to right,var(--gold),rgba(184,146,74,0.2));z-index:0;}
+.pipeline-phase{position:relative;z-index:1;padding:0 1.5rem;text-align:center;}
+.phase-num{width:44px;height:44px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:var(--gold);margin:0 auto 1.5rem;background:var(--section-bg);}
+.phase-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--paper);margin-bottom:1.5rem;}
+.phase-tools{list-style:none;}
+.phase-tools li{padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.62rem;color:var(--muted);line-height:1.6;}
+.phase-tools li strong{display:block;color:var(--paper);font-weight:400;font-size:0.68rem;margin-bottom:0.2rem;}
+.phase-tools li.highlight strong{color:var(--gold-l);}
+
+/* CONTACT + FOOTER */
+#contact{padding:6rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;align-items:center;justify-content:space-between;}
+.contact-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,4rem);font-weight:300;color:var(--paper);line-height:1.1;}
+.contact-details{display:flex;flex-direction:column;gap:1rem;}
+.contact-item{display:flex;flex-direction:column;gap:0.2rem;}
+.contact-item-label{font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted2);}
+.contact-item-value{font-size:0.8rem;color:var(--paper);}
+.contact-item-value a{color:var(--gold-l);text-decoration:none;transition:color 0.3s;}
+.contact-item-value a:hover{color:var(--gold);}
+footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;justify-content:space-between;align-items:center;}
+.footer-copy{font-size:0.58rem;letter-spacing:0.2em;color:var(--muted2);text-transform:uppercase;}
+
+/* PROJECT PAGES */
+.project-page{display:none;min-height:100vh;}
+.project-page.active{display:block;}
+
+/* CHANGE 4: project hero — only darken behind text */
+.proj-hero{height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;}
+.proj-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.6);}
+.proj-hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(13,13,11,0.97) 0%,rgba(13,13,11,0.5) 30%,transparent 60%);
+}
+.proj-hero-content{position:relative;z-index:2;padding:4rem;width:100%;}
+.proj-back{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);text-decoration:none;margin-bottom:3rem;cursor:none;transition:color 0.3s;}
+.proj-back:hover{color:var(--gold);}
+.proj-tag{font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.proj-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,8vw,6.5rem);font-weight:300;line-height:1;letter-spacing:-0.02em;color:var(--paper);margin-bottom:1.5rem;}
+.proj-meta{display:flex;gap:3rem;flex-wrap:wrap;}
+.proj-meta-item{display:flex;flex-direction:column;gap:0.3rem;}
+.proj-meta-label{font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted2);}
+.proj-meta-value{font-size:0.75rem;color:var(--paper);}
+
+/* STICKY NAV */
+.proj-nav{position:sticky;top:0;z-index:100;background:rgba(13,13,11,0.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(184,146,74,0.15);display:flex;align-items:center;padding:0 4rem;height:56px;gap:3rem;}
+.proj-nav-link{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:none;transition:color 0.3s;padding:1rem 0;border-bottom:1px solid transparent;}
+.proj-nav-link:hover,.proj-nav-link.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* SECTIONS */
+.proj-section{padding:6rem 4rem;border-top:1px solid rgba(184,146,74,0.08);}
+.proj-section-header{display:flex;align-items:baseline;gap:2rem;margin-bottom:3rem;}
+.proj-section-num{font-size:0.6rem;letter-spacing:0.3em;color:var(--gold);}
+.proj-section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;color:var(--paper);}
+.proj-section-text{max-width:700px;font-size:0.75rem;line-height:2.2;color:var(--muted);margin-bottom:3rem;}
+
+/* IMAGE LAYOUTS */
+.img-full{width:100%;aspect-ratio:21/9;object-fit:cover;display:block;margin-bottom:2px;}
+.img-auto{width:100%;height:auto;display:block;margin-bottom:2px;}
+.img-natural{width:100%;height:auto;display:block;margin-bottom:2px;object-fit:contain;}
+.img-half{width:100%;height:100%;object-fit:cover;display:block;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;}
+.grid-2 .img-half{aspect-ratio:16/10;}
+
+/* SCROLL STRIP — cambios 2 y 3 */
+.scroll-strip-wrap{position:relative;margin-bottom:3rem;}
+.scroll-strip{
+  display:flex;
+  gap:1rem;
+  overflow-x:auto;
+  padding:1rem 0 1.5rem;
+  scrollbar-width:thin;
+  scrollbar-color:var(--gold) rgba(184,146,74,0.1);
+}
+.scroll-strip::-webkit-scrollbar{height:3px;}
+.scroll-strip::-webkit-scrollbar-track{background:rgba(184,146,74,0.1);}
+.scroll-strip::-webkit-scrollbar-thumb{background:var(--gold);}
+
+.scroll-card{
+  flex:0 0 220px;
+  position:relative;
+  cursor:none;
+  transition:flex-basis 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.3s;
+  overflow:hidden;
+  border:1px solid rgba(184,146,74,0.15);
+}
+.scroll-card:hover{
+  flex-basis:500px;
+  border-color:rgba(184,146,74,0.5);
+  box-shadow:0 8px 40px rgba(0,0,0,0.6);
+  z-index:10;
+}
+.scroll-card.is-centered{
+  flex-basis:500px;
+  border-color:rgba(184,146,74,0.5);
+  box-shadow:0 8px 40px rgba(0,0,0,0.6);
+  z-index:10;
+}
+.scroll-card img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+  display:block;
+  transition:height 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.scroll-card:hover img{height:400px;}
+.scroll-card.is-centered img{height:400px;}
+
+/* Bocetos — mantener proporción vertical */
+.scroll-card.vert img{
+  height:360px;
+  object-fit:contain;
+  background:rgba(245,242,236,0.04);
+}
+.scroll-card.vert:hover img{height:520px;}
+.scroll-card.vert.is-centered img{height:520px;}
+
+.scroll-card-label{
+  padding:0.6rem 0.8rem;
+  background:rgba(13,13,11,0.9);
+  display:flex;flex-direction:column;gap:0.2rem;
+}
+.scroll-code{font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);}
+.scroll-name{font-size:0.62rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* LIGHTBOX */
+#lightbox{display:none;position:fixed;inset:0;background:rgba(13,13,11,0.97);z-index:8000;align-items:center;justify-content:center;flex-direction:column;}
+#lightbox.open{display:flex;}
+#lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;}
+.lb-close{position:absolute;top:2rem;right:2rem;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);cursor:none;background:none;border:none;}
+.lb-close:hover{color:var(--gold);}
+
+.clickable{cursor:none;}
+.clickable:hover{opacity:0.9;transition:opacity 0.2s;}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}
+  .nav-links{display:none;}
+  #home,.proj-section,#about,#pipeline,#contact,footer{padding-left:1.5rem;padding-right:1.5rem;}
+  #projects{padding:0 0 4rem;}
+  .filter-bar{padding:1.5rem;flex-wrap:wrap;}
+  .projects-grid{grid-template-columns:1fr;}
+  .project-card:first-child{aspect-ratio:16/10;}
+  #about{grid-template-columns:1fr;gap:3rem;}
+  .pipeline-track{grid-template-columns:1fr 1fr;gap:2rem;}
+  .pipeline-track::before{display:none;}
+  #contact{flex-direction:column;gap:3rem;align-items:flex-start;}
+  .grid-2{grid-template-columns:1fr;}
+  .scroll-card{flex-basis:160px;}
+  .scroll-card:hover{flex-basis:160px;}
+  .scroll-card.is-centered{flex-basis:min(78vw,320px);}
+  .scroll-card:hover img{height:280px;}
+  .scroll-card.is-centered img{height:400px;}
+  .scroll-card.vert.is-centered img{height:520px;}
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="loader">
+  <h1>MADAI DUGARTE</h1>
+  <div class="sub">Architect &middot; Architectural Visualization</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+<div id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">&#x2715; Close</button>
+  <img id="lb-img" src="" alt="">
+</div>
+<div id="main-site" style="opacity:0;transition:opacity 0.8s;">
+<nav>
+  <a href="#" class="nav-logo" onclick="showHome()">MD</a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showHome()">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#pipeline">Workflow</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<div id="home-page">
+<section id="home">
+  <div class="home-bg"></div>
+  <div class="home-grid-overlay"></div>
+  <div class="home-content">
+    <div class="home-eyebrow">Architect &middot; Architectural Visualization &mdash; M&eacute;rida, Venezuela</div>
+    <h1 class="home-title">Space begins<br>with <em>people.</em></h1>
+    <p class="home-desc">Architecture at the intersection of human experience, spatial narrative, and cinematic visualization. Every project begins by listening.</p>
+    <a href="#projects" class="home-cta">View Selected Work &rarr;</a>
+  </div>
+</section>
+
+<div class="filter-bar" id="projects">
+  <span class="filter-label">Filter</span>
+  <button class="filter-btn active" onclick="filterProjects('all',this)">All</button>
+  <button class="filter-btn" onclick="filterProjects('cultural',this)">Cultural</button>
+  <button class="filter-btn" onclick="filterProjects('civic',this)">Civic</button>
+  <button class="filter-btn" onclick="filterProjects('thesis',this)">Thesis</button>
+</div>
+
+<div class="projects-grid">
+  <div class="project-card reveal" data-cat="cultural" onclick="showProject('ecomuseo')">
+    <img src="assets/eco_r0.webp" alt="Ecomuseo de los Andes">
+    <div class="card-overlay">
+      <div class="card-text-bg">
+        <div class="card-tag">Cultural &bull; 2024</div>
+        <h2 class="card-title">Ecomuseo de los Andes</h2>
+        <div class="card-sub">M&eacute;rida, Venezuela &mdash; Twinmotion + Archicad + AI Post-production</div>
+      </div>
+    </div>
+    <div class="card-arrow">&rarr;</div>
+  </div>
+  <div class="project-card reveal" data-cat="thesis" onclick="showProject('lbn')">
+    <img src="assets/lbn_r12.webp" alt="LBN Campus">
+    <div class="card-overlay">
+      <div class="card-text-bg">
+        <div class="card-tag">Thesis &bull; 2025</div>
+        <h2 class="card-title">LBN Las Buenas Nuevas</h2>
+        <div class="card-sub">M&eacute;rida, Venezuela &mdash; Neuroarchitecture Campus</div>
+      </div>
+    </div>
+    <div class="card-arrow">&rarr;</div>
+  </div>
+  <div class="project-card reveal" data-cat="cultural" onclick="showProject('mediateca')">
+    <img src="assets/mt_hero.webp" alt="Parque Mediateca">
+    <div class="card-overlay">
+      <div class="card-text-bg">
+        <div class="card-tag">Cultural &bull; 2024 &bull; &#127942; 1st Place Expoarq 2024</div>
+        <h2 class="card-title">Parque Mediateca</h2>
+        <div class="card-sub">M&eacute;rida, Venezuela &mdash; Form Exploration Award</div>
+      </div>
+    </div>
+    <div class="card-arrow">&rarr;</div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="about-left reveal">
+    <span class="section-label">About</span>
+    <h2 class="about-title">Architecture that serves people.</h2>
+    <p class="about-text">I believe architecture's highest purpose is to serve people &mdash; not as an abstract ideal, but as the active starting point of every design decision. I'm an architect and architectural visualization designer graduating from Universidad de Los Andes (2025), where my thesis explored neuroarchitecture as a framework for social relationship-based design. My work combines technical precision with cinematic storytelling, translating complex spatial ideas into images that communicate meaning before a single wall is built.</p>
+    <div class="about-stats">
+      <div><div class="stat-num">3</div><div class="stat-label">Projects</div></div>
+      <div><div class="stat-num">1&times;</div><div class="stat-label">Expoarq Award</div></div>
+      <div><div class="stat-num">2025</div><div class="stat-label">ULA Graduation</div></div>
+    </div>
+  </div>
+  <div class="about-right reveal">
+    <div class="skills-block">
+      <div class="skills-title">Design &amp; Modeling</div>
+      <div class="skill-item"><span class="skill-name">Archicad</span><span class="skill-level">Advanced</span></div>
+      <div class="skill-item"><span class="skill-name">SketchUp</span><span class="skill-level">Intermediate</span></div>
+    </div>
+    <div class="skills-block">
+      <div class="skills-title">Visualization</div>
+      <div class="skill-item"><span class="skill-name">Twinmotion</span><span class="skill-level">Advanced</span></div>
+      <div class="skill-item"><span class="skill-name">Photoshop</span><span class="skill-level">Advanced</span></div>
+    </div>
+    <div class="skills-block">
+      <div class="skills-title">Production</div>
+      <div class="skill-item"><span class="skill-name">Adobe Premiere</span><span class="skill-level">Intermediate</span></div>
+    </div>
+    <div class="skills-block">
+      <div class="skills-title">Languages</div>
+      <div class="skill-item"><span class="skill-name">Spanish</span><span class="skill-level">Native</span></div>
+      <div class="skill-item"><span class="skill-name">English</span><span class="skill-level">Intermediate-Advanced</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="pipeline">
+  <div class="pipeline-header">
+    <span class="section-label">Methodology</span>
+    <h2>AI + Tools Workflow Pipeline</h2>
+  </div>
+  <div class="pipeline-track">
+    <div class="pipeline-phase reveal">
+      <div class="phase-num">01</div>
+      <div class="phase-title">Research &amp; Concept</div>
+      <ul class="phase-tools">
+        <li><strong>Hand Drawing</strong>Spatial ideation &amp; sketch development</li>
+        <li><strong>Gemini</strong>Research &amp; conceptual brainstorming</li>
+        <li><strong>NotebookLM</strong>Normative study &amp; design strategy</li>
+      </ul>
+    </div>
+    <div class="pipeline-phase reveal">
+      <div class="phase-num">02</div>
+      <div class="phase-title">Design</div>
+      <ul class="phase-tools">
+        <li><strong>Archicad</strong>BIM modeling &amp; technical development</li>
+        <li><strong>Claude</strong>Programming &amp; design guidance</li>
+      </ul>
+    </div>
+    <div class="pipeline-phase reveal">
+      <div class="phase-num">03</div>
+      <div class="phase-title">Visualization</div>
+      <ul class="phase-tools">
+        <li><strong>Twinmotion</strong>Real-time rendering base</li>
+        <li class="highlight"><strong>Gemini Agents</strong>Ultra-realistic render post-production</li>
+        <li class="highlight"><strong>Qwen</strong>Ultra-realistic video animations</li>
+      </ul>
+    </div>
+    <div class="pipeline-phase reveal">
+      <div class="phase-num">04</div>
+      <div class="phase-title">Delivery</div>
+      <ul class="phase-tools">
+        <li><strong>Premiere</strong>Video editing &amp; shot assembly</li>
+        <li><strong>NotebookLM</strong>Final presentation &amp; infographic creation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-left reveal">
+    <span class="section-label">Contact</span>
+    <h2 class="contact-title">Let's build<br>something<br>together.</h2>
+  </div>
+  <div class="contact-details reveal">
+    <div class="contact-item">
+      <span class="contact-item-label">Email</span>
+      <span class="contact-item-value"><a href="mailto:Arq.madaidugarte@gmail.com">Arq.madaidugarte@gmail.com</a></span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-item-label">Phone / WhatsApp</span>
+      <span class="contact-item-value"><a href="tel:+584247909385">+58 424 790 9385</a></span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-item-label">Location</span>
+      <span class="contact-item-value">M&eacute;rida, Venezuela &mdash; Available Remote EST/CST</span>
+    </div>
+  </div>
+</section>
+<footer>
+  <span class="footer-copy">&copy; 2025 Madai Dugarte &mdash; Architect &middot; Architectural Visualization</span>
+  <span class="footer-copy">Universidad de Los Andes &mdash; M&eacute;rida, Venezuela</span>
+</footer>
+</div><!-- end home-page -->
+
+<!-- ECOMUSEO -->
+<div id="proj-ecomuseo" class="project-page">
+  <div class="proj-hero">
+    <img class="proj-hero-img" src="assets/eco_hero.webp" alt="Ecomuseo">
+    <div class="proj-hero-overlay"></div>
+    <div class="proj-hero-content">
+      <a class="proj-back" href="#" onclick="showHome()">&larr; Back to Work</a>
+      <div class="proj-tag">Cultural Museum &bull; Academic Project Year 4 &bull; 2024</div>
+      <h1 class="proj-title">Ecomuseo<br>de los Andes</h1>
+      <div class="proj-meta">
+        <div class="proj-meta-item"><span class="proj-meta-label">Location</span><span class="proj-meta-value">Parque Metropolitano Albarregas, M&eacute;rida</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Role</span><span class="proj-meta-value">Sole Architect</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Software</span><span class="proj-meta-value">Twinmotion + Archicad + Gemini Agents</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Reference</span><span class="proj-meta-value">Museo de Arte Contempor&aacute;neo de Suzhou &mdash; Bjarke Ingels</span></div>
+      </div>
+    </div>
+  </div>
+  <nav class="proj-nav">
+    <a class="proj-nav-link" href="#eco-concept">Concept</a>
+    <a class="proj-nav-link" href="#eco-process">Process</a>
+    <a class="proj-nav-link" href="#eco-technical">Technical</a>
+    <a class="proj-nav-link" href="#eco-outcome">Outcome</a>
+  </nav>
+  <section class="proj-section" id="eco-concept">
+    <div class="proj-section-header"><span class="proj-section-num">01</span><h2 class="proj-section-title">Concept</h2></div>
+    <p class="proj-section-text">A portal of access to the Parque Metropolitano Albarregas. The fragmented form responds to topography, solar incidence, and the vernacular language of informal settlements &mdash; a building that belongs to its landscape while reinterpreting it.</p>
+    <img class="img-natural clickable" src="assets/eco_r3.webp" alt="Ecomuseo fachada" onclick="openLightbox(this.src)">
+  </section>
+  <section class="proj-section" id="eco-process">
+    <div class="proj-section-header"><span class="proj-section-num">02</span><h2 class="proj-section-title">Process</h2></div>
+    <p class="proj-section-text">The design evolution moves through six formal operations &mdash; rotation, division, stepping, extrusion, and deformation &mdash; each responding to a specific environmental or programmatic driver.</p>
+    <img class="img-auto clickable" src="assets/eco_d4.webp" alt="Evoluci&oacute;n volum&eacute;trica" onclick="openLightbox(this.src)">
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/eco_d5.webp" alt="Control de luz" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/eco_d6.webp" alt="Control del viento" onclick="openLightbox(this.src)">
+    </div>
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/eco_d2.webp" alt="Topolog&iacute;a +4 y 0" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/eco_d3.webp" alt="Topolog&iacute;a -4 y -8" onclick="openLightbox(this.src)">
+    </div>
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/eco_z1.webp" alt="Zonificaci&oacute;n 1" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/eco_z2.webp" alt="Zonificaci&oacute;n 2" onclick="openLightbox(this.src)">
+    </div>
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/eco_z3.webp" alt="Zonificaci&oacute;n 3" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/eco_z4.webp" alt="Zonificaci&oacute;n 4" onclick="openLightbox(this.src)">
+    </div>
+  </section>
+  <section class="proj-section" id="eco-technical">
+    <div class="proj-section-header"><span class="proj-section-num">03</span><h2 class="proj-section-title">Technical</h2></div>
+    <p class="proj-section-text">Architectural drawings spanning five floor levels (&plusmn;0.00 to -12.00), four facade elevations, and one longitudinal section.</p>
+    <div class="scroll-strip-wrap">
+      <div class="scroll-strip">
+        <div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A-01 Conjunto.webp" alt="Conjunto">
+          <div class="scroll-card-label"><span class="scroll-code">A-01</span><span class="scroll-name">Conjunto</span></div>
+        </div>
+        <div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A-02 Planta +4,00 conv 1.webp" alt="Planta nivel +4,00">
+          <div class="scroll-card-label"><span class="scroll-code">A-02</span><span class="scroll-name">Planta nivel +4,00</span></div>
+        </div>
+        <div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A-03 Planta nivel 0,00 conv 1.webp" alt="Planta nivel 0,00">
+          <div class="scroll-card-label"><span class="scroll-code">A-03</span><span class="scroll-name">Planta nivel 0,00</span></div>
+        </div>
+        <div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A-04 Planta nivel -4,00 conv 1.webp" alt="Planta nivel -4,00">
+          <div class="scroll-card-label"><span class="scroll-code">A-04</span><span class="scroll-name">Planta nivel -4,00</span></div>
+        </div>
+        <div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A-05 Planta nivel -8,00 conv 1.webp" alt="Planta nivel -8,00">
+          <div class="scroll-card-label"><span class="scroll-code">A-05</span><span class="scroll-name">Planta nivel -8,00</span></div>
+        </div>
+        <div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A-10 CORTE B-B´ conv 1.webp" alt="Secci&oacute;n B-B y A-A">
+          <div class="scroll-card-label"><span class="scroll-code">A-10</span><span class="scroll-name">Secci&oacute;n B-B / A-A</span></div>
+        </div>
+        <div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/1 FACHADA S-O_.webp" alt="Fachada S-O">
+          <div class="scroll-card-label"><span class="scroll-code">01</span><span class="scroll-name">Fachada S-O</span></div>
+        </div>
+        <div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/2 FACHADA S-E_.webp" alt="Fachada S-E">
+          <div class="scroll-card-label"><span class="scroll-code">02</span><span class="scroll-name">Fachada S-E</span></div>
+        </div>
+        <div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/3 FACHADA N-O_.webp" alt="Fachada N-O">
+          <div class="scroll-card-label"><span class="scroll-code">03</span><span class="scroll-name">Fachada N-O</span></div>
+        </div>
+        <div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/4 FACHADA N-E_.webp" alt="Fachada N-E">
+          <div class="scroll-card-label"><span class="scroll-code">04</span><span class="scroll-name">Fachada N-E</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="proj-section" id="eco-outcome">
+    <div class="proj-section-header"><span class="proj-section-num">04</span><h2 class="proj-section-title">Outcome</h2></div>
+    <p class="proj-section-text">AI-enhanced photorealistic renders produced through Gemini Agents post-production pipeline.</p>
+    <img class="img-full clickable" src="assets/eco_r4.webp" alt="Bajo b&oacute;veda" onclick="openLightbox(this.src)">
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/eco_r22.webp" alt="Lobby curvo" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/eco_r2.webp" alt="Sala rotonda" onclick="openLightbox(this.src)">
+    </div>
+    <img class="img-full clickable" src="assets/eco_r5.webp" alt="Terraza Andes" onclick="openLightbox(this.src)">
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/eco_r6.webp" alt="Sala lectura" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/eco_r1.webp" alt="Galer&iacute;a arte" onclick="openLightbox(this.src)">
+    </div>
+    <img class="img-full clickable" src="assets/eco_r9.webp" alt="Sala espera" onclick="openLightbox(this.src)">
+  </section>
+  <div style="display:flex;justify-content:space-between;padding:4rem;border-top:1px solid rgba(184,146,74,0.1);gap:2rem;"><div style="flex:1;"></div><button onclick="showProject('lbn')" style="flex:1;display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">Next &rarr;</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">LBN Las Buenas Nuevas</span></button></div>
+</div>
+
+<!-- LBN -->
+<div id="proj-lbn" class="project-page">
+  <div class="proj-hero">
+    <img class="proj-hero-img" src="assets/lbn_r12.webp" alt="LBN Campus">
+    <div class="proj-hero-overlay"></div>
+    <div class="proj-hero-content">
+      <a class="proj-back" href="#" onclick="showHome()">&larr; Back to Work</a>
+      <div class="proj-tag">Civic Campus &bull; Undergraduate Thesis &bull; 2025</div>
+      <h1 class="proj-title">LBN Las Buenas<br>Nuevas Campus</h1>
+      <div class="proj-meta">
+        <div class="proj-meta-item"><span class="proj-meta-label">Location</span><span class="proj-meta-value">M&eacute;rida, Venezuela</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Role</span><span class="proj-meta-value">Sole Architect</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Software</span><span class="proj-meta-value">Twinmotion + Archicad + Gemini Agents</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Framework</span><span class="proj-meta-value">Neuroarchitecture + Faith Community</span></div>
+      </div>
+    </div>
+  </div>
+  <nav class="proj-nav">
+    <a class="proj-nav-link" href="#lbn-concept">Concept</a>
+    <a class="proj-nav-link" href="#lbn-process">Process</a>
+    <a class="proj-nav-link" href="#lbn-technical">Technical</a>
+    <a class="proj-nav-link" href="#lbn-outcome">Outcome</a>
+  </nav>
+  <section class="proj-section" id="lbn-concept">
+    <div class="proj-section-header"><span class="proj-section-num">01</span><h2 class="proj-section-title">Concept</h2></div>
+    <p class="proj-section-text">A faith campus designed from neuroarchitecture principles. Three relational pillars &mdash; Capacitaci&oacute;n (low intimacy), Cuidado (medium intimacy), and Celebraci&oacute;n (theater) &mdash; organize around an octagonal relational center. References: River Arena Church, Glasir T&oacute;rshavn, Teatro Teresa Carre&ntilde;o, Steven Holl (porosity).</p>
+    <img class="img-natural clickable" src="assets/lbn_d2.webp" alt="Campus completo" onclick="openLightbox(this.src)">
+  </section>
+  <section class="proj-section" id="lbn-process">
+    <div class="proj-section-header"><span class="proj-section-num">02</span><h2 class="proj-section-title">Process</h2></div>
+    <p class="proj-section-text">Hand-drawn sketches from the design notebook document the spatial and structural thinking at each stage &mdash; from initial zoning to detailed construction sections. Scroll to explore.</p>
+    <div class="scroll-strip"><div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/lbn_p1.webp" alt="Zonificación conceptual"><div class="scroll-card-label"><span class="scroll-name">Zonificación conceptual</span></div></div><div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/lbn_p4.webp" alt="Luz y contraste"><div class="scroll-card-label"><span class="scroll-name">Luz y contraste</span></div></div><div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/lbn_p7.webp" alt="Vinculación de planos"><div class="scroll-card-label"><span class="scroll-name">Vinculación de planos</span></div></div><div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/lbn_p9.webp" alt="Intimidad media / alta"><div class="scroll-card-label"><span class="scroll-name">Intimidad media / alta</span></div></div><div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/lbn_p11.webp" alt="Sala de Consería"><div class="scroll-card-label"><span class="scroll-name">Sala de Consería</span></div></div><div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/lbn_p13.webp" alt="Cubierta reflectiva"><div class="scroll-card-label"><span class="scroll-name">Cubierta reflectiva</span></div></div><div class="scroll-card vert" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/lbn_p18.webp" alt="Panel Kalwall"><div class="scroll-card-label"><span class="scroll-name">Panel Kalwall</span></div></div></div>
+  </section>
+  <section class="proj-section" id="lbn-technical">
+    <div class="proj-section-header"><span class="proj-section-num">03</span><h2 class="proj-section-title">Technical</h2></div>
+    <p class="proj-section-text">Annotated architectural models communicate materiality, spatial program, structural systems, and chromatic strategy across all three building pillars.</p>
+    <img class="img-full clickable" src="assets/lbn_d1.webp" alt="Materialidad Kalwall" onclick="openLightbox(this.src)">
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/lbn_d3.webp" alt="Edificio Capacitaci&oacute;n" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/lbn_d4.webp" alt="Axonometr&iacute;a interior" onclick="openLightbox(this.src)">
+    </div>
+    <img class="img-full clickable" src="assets/lbn_d5.webp" alt="Planta auditorio" onclick="openLightbox(this.src)">
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/lbn_d6.webp" alt="Secci&oacute;n teatro" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/lbn_d7.webp" alt="Sistema estructural" onclick="openLightbox(this.src)">
+    </div>
+    <img class="img-full clickable" src="assets/lbn_d8.webp" alt="Espacio crom&aacute;tico" onclick="openLightbox(this.src)">
+  </section>
+  <section class="proj-section" id="lbn-outcome">
+    <div class="proj-section-header"><span class="proj-section-num">04</span><h2 class="proj-section-title">Outcome</h2></div>
+    <p class="proj-section-text">Photorealistic renders capturing the campus across time &mdash; golden hour arrival, nocturnal intimacy, and the lived energy of each programmatic space.</p>
+    <img class="img-full clickable" src="assets/lbn_r6.webp" alt="Plaza central LBN" onclick="openLightbox(this.src)">
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/lbn_r11.webp" alt="Exterior noche" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/lbn_r10.webp" alt="Teatro interior" onclick="openLightbox(this.src)">
+    </div>
+    <img class="img-full clickable" src="assets/lbn_r8.webp" alt="Corredor azul" onclick="openLightbox(this.src)">
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/lbn_r2.webp" alt="Sala Cuidado" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/lbn_r3.webp" alt="Corredor Capacitaci&oacute;n" onclick="openLightbox(this.src)">
+    </div>
+    <img class="img-full clickable" src="assets/lbn_r7.webp" alt="Sala biof&iacute;lica" onclick="openLightbox(this.src)">
+  </section>
+  <div style="display:flex;justify-content:space-between;padding:4rem;border-top:1px solid rgba(184,146,74,0.1);gap:2rem;"><button onclick="showProject('ecomuseo')" style="flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">&larr; Previous</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">Ecomuseo de los Andes</span></button><button onclick="showProject('mediateca')" style="flex:1;display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">Next &rarr;</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">Parque Mediateca</span></button></div>
+</div>
+
+<!-- MEDIATECA -->
+<div id="proj-mediateca" class="project-page">
+  <div class="proj-hero">
+    <img class="proj-hero-img" src="assets/mt_hero.webp" alt="Parque Mediateca">
+    <div class="proj-hero-overlay"></div>
+    <div class="proj-hero-content">
+      <a class="proj-back" href="#" onclick="showHome()">&larr; Back to Work</a>
+      <div class="proj-tag">Cultural &bull; Academic Project Year 4 &bull; 2024 &bull; &#127942; 1st Place Expoarq 2024</div>
+      <h1 class="proj-title">Parque<br>Mediateca</h1>
+      <div class="proj-meta">
+        <div class="proj-meta-item"><span class="proj-meta-label">Location</span><span class="proj-meta-value">M&eacute;rida, Venezuela &mdash; PROAMER</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Role</span><span class="proj-meta-value">Concept + Form + Visualization</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Software</span><span class="proj-meta-value">Twinmotion + Gemini Agents</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Award</span><span class="proj-meta-value">1st Place &mdash; Form Exploration Category</span></div>
+      </div>
+    </div>
+  </div>
+  <nav class="proj-nav">
+    <a class="proj-nav-link" href="#mt-concept">Concept</a>
+    <a class="proj-nav-link" href="#mt-process">Process</a>
+    <a class="proj-nav-link" href="#mt-technical">Technical</a>
+    <a class="proj-nav-link" href="#mt-outcome">Outcome</a>
+  </nav>
+  <section class="proj-section" id="mt-concept">
+    <div class="proj-section-header"><span class="proj-section-num">01</span><h2 class="proj-section-title">Concept</h2></div>
+    <p class="proj-section-text">Two cylinders that embrace &mdash; a metaphor of social cohesion between a vulnerable neighborhood and the middle class. The park penetrates the building. Seven levels of program designed for cyclists, runners, and families.</p>
+    <img class="img-natural clickable" src="assets/mt_r8.webp" alt="Mediateca exterior" onclick="openLightbox(this.src)">
+  </section>
+  <section class="proj-section" id="mt-process">
+    <div class="proj-section-header"><span class="proj-section-num">02</span><h2 class="proj-section-title">Process</h2></div>
+    <p class="proj-section-text">Architectural models reveal the spatial logic of each level — read top to bottom, from the aerial view of the complete campus down through each programmatic floor.</p>
+    <!-- cambio 1: reordenado top→bottom -->
+    <img class="img-full clickable" src="assets/mt_z1.webp" alt="Vista a&eacute;rea campus" onclick="openLightbox(this.src)">
+    <img class="img-full clickable" src="assets/mt_z5.webp" alt="Auditorio + terraza verde" onclick="openLightbox(this.src)">
+    <img class="img-full clickable" src="assets/mt_z4.webp" alt="Nivel puente biof&iacute;lico" onclick="openLightbox(this.src)">
+    <img class="img-full clickable" src="assets/mt_z3.webp" alt="Nivel 1 &mdash; biblioteca" onclick="openLightbox(this.src)">
+    <img class="img-full clickable" src="assets/mt_z2.webp" alt="Planta baja" onclick="openLightbox(this.src)">
+  </section>
+  <section class="proj-section" id="mt-technical">
+    <div class="proj-section-header"><span class="proj-section-num">03</span><h2 class="proj-section-title">Technical Drawings</h2></div>
+    <p class="proj-section-text">Complete architectural drawing set &mdash; seven floor plans from level -5.00 to +19.00, plus two longitudinal sections. Hover to expand, click to view full size.</p>
+    <div class="scroll-strip"><div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/mt_plano_A01.webp" alt="Planta Nivel -5.00"><div class="scroll-card-label"><span class="scroll-code">A01</span><span class="scroll-name">Planta Nivel -5.00</span></div></div><div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/mt_plano_A02.webp" alt="Planta Nivel ±0.00"><div class="scroll-card-label"><span class="scroll-code">A02</span><span class="scroll-name">Planta Nivel ±0.00</span></div></div><div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/mt_plano_A03.webp" alt="Planta Nivel +4.00"><div class="scroll-card-label"><span class="scroll-code">A03</span><span class="scroll-name">Planta Nivel +4.00</span></div></div><div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/mt_plano_A04.webp" alt="Planta Nivel +8.00"><div class="scroll-card-label"><span class="scroll-code">A04</span><span class="scroll-name">Planta Nivel +8.00</span></div></div><div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/mt_plano_A05.webp" alt="Planta Nivel +12.00"><div class="scroll-card-label"><span class="scroll-code">A05</span><span class="scroll-name">Planta Nivel +12.00</span></div></div><div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/mt_plano_A06.webp" alt="Planta Nivel +16.00"><div class="scroll-card-label"><span class="scroll-code">A06</span><span class="scroll-name">Planta Nivel +16.00</span></div></div><div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/mt_plano_A07.webp" alt="Planta Nivel +19.00"><div class="scroll-card-label"><span class="scroll-code">A07</span><span class="scroll-name">Planta Nivel +19.00</span></div></div><div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/mt_plano_A10.webp" alt="Sección A-A'"><div class="scroll-card-label"><span class="scroll-code">A10</span><span class="scroll-name">Sección A-A'</span></div></div><div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)"><img src="assets/mt_plano_A11.webp" alt="Sección B-B'"><div class="scroll-card-label"><span class="scroll-code">A11</span><span class="scroll-name">Sección B-B'</span></div></div></div>
+  </section>
+  <section class="proj-section" id="mt-outcome">
+    <div class="proj-section-header"><span class="proj-section-num">04</span><h2 class="proj-section-title">Outcome</h2></div>
+    <p class="proj-section-text">Award-winning photorealistic visualization spanning all seven programmatic levels.</p>
+    <img class="img-full clickable" src="assets/mt_r7.webp" alt="Atrio esferas cromadas" onclick="openLightbox(this.src)">
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/mt_r2.webp" alt="Librer&iacute;a ni&ntilde;os" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/mt_r3.webp" alt="Librer&iacute;a bean bags" onclick="openLightbox(this.src)">
+    </div>
+    <img class="img-full clickable" src="assets/mt_r4.webp" alt="Auditorio escalinatas" onclick="openLightbox(this.src)">
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/mt_r5.webp" alt="Nivel biof&iacute;lico" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/mt_r9.webp" alt="Nivel ciclistas" onclick="openLightbox(this.src)">
+    </div>
+    <div class="grid-2">
+      <img class="img-half clickable" src="assets/mt_r1.webp" alt="Zona adolescentes" onclick="openLightbox(this.src)">
+      <img class="img-half clickable" src="assets/mt_r10.webp" alt="Pasaje biblioteca" onclick="openLightbox(this.src)">
+    </div>
+  </section>
+  <div style="display:flex;justify-content:space-between;padding:4rem;border-top:1px solid rgba(184,146,74,0.1);gap:2rem;"><button onclick="showProject('lbn')" style="flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">&larr; Previous</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">LBN Las Buenas Nuevas</span></button><div style="flex:1;"></div></div>
+</div>
+
+</div><!-- end main-site -->
+<script>
+const cursor=document.getElementById('cursor');
+document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';});
+document.querySelectorAll('a,button,.project-card,.clickable,.scroll-card').forEach(el=>{el.addEventListener('mouseenter',()=>cursor.classList.add('expand'));el.addEventListener('mouseleave',()=>cursor.classList.remove('expand'));});
+window.addEventListener('load',()=>{setTimeout(()=>{const loader=document.getElementById('loader');const site=document.getElementById('main-site');loader.style.opacity='0';site.style.opacity='1';setTimeout(()=>loader.style.display='none',800);},2000);});
+function showHome(){document.getElementById('home-page').style.display='block';document.querySelectorAll('.project-page').forEach(p=>p.classList.remove('active'));window.scrollTo(0,0);}
+function showProject(id){document.getElementById('home-page').style.display='none';document.querySelectorAll('.project-page').forEach(p=>p.classList.remove('active'));const proj=document.getElementById('proj-'+id);if(proj){proj.classList.add('active');window.scrollTo(0,0);}}
+function filterProjects(cat,btn){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.project-card').forEach(card=>{card.style.display=(cat==='all'||card.dataset.cat===cat)?'block':'none';});}
+function openLightbox(src){document.getElementById('lb-img').src=src;document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLightbox();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+const sections=document.querySelectorAll('.proj-section');
+const navLinks=document.querySelectorAll('.proj-nav-link');
+const sectionObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const id=entry.target.id;navLinks.forEach(link=>link.classList.toggle('active',link.getAttribute('href')==='#'+id));}});},{threshold:0.3});
+sections.forEach(s=>sectionObserver.observe(s));
+
+const mobileScrollQuery=window.matchMedia('(max-width:900px)');
+let mobileScrollCleanup=[];
+
+function updateCenteredScrollCard(strip){
+  const cards=Array.from(strip.querySelectorAll('.scroll-card'));
+  if(!cards.length) return;
+  const stripRect=strip.getBoundingClientRect();
+  const centerX=stripRect.left+stripRect.width/2;
+  let closestCard=null;
+  let closestDistance=Infinity;
+
+  cards.forEach(card=>{
+    const rect=card.getBoundingClientRect();
+    const cardCenter=rect.left+rect.width/2;
+    const distance=Math.abs(cardCenter-centerX);
+    if(distance<closestDistance){
+      closestDistance=distance;
+      closestCard=card;
+    }
+  });
+
+  cards.forEach(card=>card.classList.toggle('is-centered',card===closestCard));
+}
+
+function setupMobileScrollCentering(){
+  mobileScrollCleanup.forEach(cleanup=>cleanup());
+  mobileScrollCleanup=[];
+
+  if(!mobileScrollQuery.matches) return;
+
+  document.querySelectorAll('.scroll-strip').forEach(strip=>{
+    let ticking=false;
+    const handleScroll=()=>{
+      if(ticking) return;
+      ticking=true;
+      requestAnimationFrame(()=>{
+        updateCenteredScrollCard(strip);
+        ticking=false;
+      });
+    };
+
+    handleScroll();
+    strip.addEventListener('scroll',handleScroll,{passive:true});
+    window.addEventListener('resize',handleScroll);
+    mobileScrollCleanup.push(()=>{
+      strip.removeEventListener('scroll',handleScroll);
+      window.removeEventListener('resize',handleScroll);
+      strip.querySelectorAll('.scroll-card').forEach(card=>card.classList.remove('is-centered'));
+    });
+  });
+}
+
+mobileScrollQuery.addEventListener('change',setupMobileScrollCentering);
+setupMobileScrollCentering();
+</script>
+</body>
+</html>
