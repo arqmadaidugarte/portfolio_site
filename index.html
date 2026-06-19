@@ -12,11 +12,11 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--ink);color:var(--paper);font-family:'DM Mono',monospace;font-weight:300;cursor:none;overflow-x:hidden;}
-
+ 
 /* CURSOR */
 #cursor{position:fixed;width:12px;height:12px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s;mix-blend-mode:difference;}
 #cursor.expand{width:40px;height:40px;}
-
+ 
 /* LOADER */
 #loader{position:fixed;inset:0;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9000;transition:opacity 0.8s ease;}
 #loader h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,5rem);font-weight:300;letter-spacing:0.3em;color:var(--paper);}
@@ -24,14 +24,14 @@ body{background:var(--ink);color:var(--paper);font-family:'DM Mono',monospace;fo
 .loader-bar{width:200px;height:1px;background:var(--muted2);margin-top:3rem;overflow:hidden;}
 .loader-fill{height:100%;background:var(--gold);width:0%;animation:loadfill 1.8s ease forwards;}
 @keyframes loadfill{to{width:100%;}}
-
+ 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 4rem;background:linear-gradient(to bottom,rgba(13,13,11,0.95) 0%,transparent 100%);}
 .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;letter-spacing:0.2em;color:var(--paper);text-decoration:none;}
 .nav-links{display:flex;gap:2.5rem;list-style:none;}
 .nav-links a{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;}
 .nav-links a:hover{color:var(--gold);}
-
+ 
 /* HOME HERO */
 #home{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 4rem 5rem;position:relative;overflow:hidden;}
 .home-bg{position:absolute;inset:0;background:linear-gradient(135deg,#1a1610 0%,#0d0d0b 60%);}
@@ -43,7 +43,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .home-desc{font-size:0.75rem;letter-spacing:0.1em;color:var(--muted);max-width:500px;line-height:2;margin-bottom:3rem;}
 .home-cta{display:inline-flex;align-items:center;gap:1rem;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:0.5rem;transition:gap 0.3s;}
 .home-cta:hover{gap:1.5rem;}
-
+ 
 /* FILTER + GRID */
 .filter-bar{display:flex;align-items:center;gap:0.5rem;padding:2rem 4rem;border-bottom:1px solid rgba(184,146,74,0.1);}
 .filter-label{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted2);margin-right:1rem;}
@@ -63,7 +63,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .card-sub{font-size:0.6rem;letter-spacing:0.2em;color:var(--muted);}
 .card-arrow{position:absolute;top:2rem;right:2rem;width:40px;height:40px;border:1px solid rgba(184,146,74,0.4);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem;opacity:0;transform:translateY(10px);transition:opacity 0.3s,transform 0.3s;}
 .project-card:hover .card-arrow{opacity:1;transform:translateY(0);}
-
+ 
 /* ABOUT */
 #about{padding:8rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;border-top:1px solid rgba(184,146,74,0.1);}
 .section-label{font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;display:block;}
@@ -77,7 +77,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .skill-item{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.04);}
 .skill-name{font-size:0.7rem;color:var(--paper);}
 .skill-level{font-size:0.58rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;}
-
+ 
 /* PIPELINE */
 #pipeline{padding:6rem 4rem;border-top:1px solid rgba(184,146,74,0.1);background:var(--section-bg);}
 .pipeline-header{text-align:center;margin-bottom:4rem;}
@@ -91,7 +91,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .phase-tools li{padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.62rem;color:var(--muted);line-height:1.6;}
 .phase-tools li strong{display:block;color:var(--paper);font-weight:400;font-size:0.68rem;margin-bottom:0.2rem;}
 .phase-tools li.highlight strong{color:var(--gold-l);}
-
+ 
 /* CONTACT + FOOTER */
 #contact{padding:6rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;align-items:center;justify-content:space-between;}
 .contact-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,4rem);font-weight:300;color:var(--paper);line-height:1.1;}
@@ -103,11 +103,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .contact-item-value a:hover{color:var(--gold);}
 footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;justify-content:space-between;align-items:center;}
 .footer-copy{font-size:0.58rem;letter-spacing:0.2em;color:var(--muted2);text-transform:uppercase;}
-
+ 
 /* PROJECT PAGES */
 .project-page{display:none;min-height:100vh;}
 .project-page.active{display:block;}
-
+ 
 /* CHANGE 4: project hero — only darken behind text */
 .proj-hero{height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;}
 .proj-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.6);}
@@ -124,30 +124,33 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
 .proj-meta-item{display:flex;flex-direction:column;gap:0.3rem;}
 .proj-meta-label{font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted2);}
 .proj-meta-value{font-size:0.75rem;color:var(--paper);}
-
+ 
 /* STICKY NAV */
 .proj-nav{position:sticky;top:0;z-index:100;background:rgba(13,13,11,0.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(184,146,74,0.15);display:flex;align-items:center;padding:0 4rem;height:56px;gap:3rem;}
 .proj-nav-link{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:none;transition:color 0.3s;padding:1rem 0;border-bottom:1px solid transparent;}
 .proj-nav-link:hover,.proj-nav-link.active{color:var(--gold);border-bottom-color:var(--gold);}
-
+ 
 /* SECTIONS */
 .proj-section{padding:6rem 4rem;border-top:1px solid rgba(184,146,74,0.08);}
 .proj-section-header{display:flex;align-items:baseline;gap:2rem;margin-bottom:3rem;}
 .proj-section-num{font-size:0.6rem;letter-spacing:0.3em;color:var(--gold);}
 .proj-section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;color:var(--paper);}
 .proj-section-text{max-width:700px;font-size:0.75rem;line-height:2.2;color:var(--muted);margin-bottom:3rem;}
-
+ 
 .compare-group{margin-bottom:3rem;}
 .compare-label{font-size:0.58rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
-.before-after-slider{position:relative;overflow:hidden;margin-bottom:2rem;background:#111;}
-.before-after-slider img{display:block;width:100%;height:auto;}
+.before-after-slider{position:relative;overflow:hidden;margin-bottom:2rem;background:#111;aspect-ratio:16/9;}
+.before-after-slider img{display:block;width:100%;height:100%;object-fit:cover;}
 .before-after-before{position:relative;z-index:1;}
 .before-after-after{position:absolute;inset:0;z-index:2;object-fit:cover;clip-path:inset(0 calc(100% - var(--reveal,50%)) 0 0);pointer-events:none;}
 .before-after-handle{position:absolute;top:0;bottom:0;left:var(--reveal,50%);z-index:3;width:2px;background:rgba(245,242,236,0.95);box-shadow:0 0 0 1px rgba(0,0,0,0.45);transform:translateX(-1px);pointer-events:none;}
 .before-after-handle::before{content:'';position:absolute;top:50%;left:50%;width:26px;height:26px;border-radius:50%;border:1px solid rgba(245,242,236,0.95);background:rgba(13,13,11,0.6);transform:translate(-50%,-50%);}
 .before-after-range{position:absolute;inset:0;z-index:4;width:100%;height:100%;opacity:0;cursor:ew-resize;-webkit-appearance:none;appearance:none;}
+.ba-tag{position:absolute;bottom:1rem;z-index:3;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;padding:0.3rem 0.7rem;background:rgba(13,13,11,0.75);border:1px solid rgba(245,242,236,0.2);color:var(--paper);pointer-events:none;}
+.ba-tag--before{left:1rem;}
+.ba-tag--after{right:1rem;color:var(--gold);border-color:rgba(184,146,74,0.4);}
 .proj-video{width:100%;display:block;margin-bottom:2px;background:#000;}
-
+ 
 /* IMAGE LAYOUTS */
 .img-full{width:100%;aspect-ratio:21/9;object-fit:cover;display:block;margin-bottom:2px;}
 .img-auto{width:100%;height:auto;display:block;margin-bottom:2px;}
@@ -155,7 +158,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
 .img-half{width:100%;height:100%;object-fit:cover;display:block;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;}
 .grid-2 .img-half{aspect-ratio:16/10;}
-
+ 
 /* SCROLL STRIP — cambios 2 y 3 */
 .scroll-strip-wrap{position:relative;margin-bottom:3rem;}
 .scroll-strip{
@@ -169,7 +172,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
 .scroll-strip::-webkit-scrollbar{height:3px;}
 .scroll-strip::-webkit-scrollbar-track{background:rgba(184,146,74,0.1);}
 .scroll-strip::-webkit-scrollbar-thumb{background:var(--gold);}
-
+ 
 .scroll-card{
   flex:0 0 220px;
   position:relative;
@@ -199,7 +202,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
 }
 .scroll-card:hover img{height:400px;}
 .scroll-card.is-centered img{height:400px;}
-
+ 
 /* Bocetos — mantener proporción vertical */
 .scroll-card.vert img{
   height:360px;
@@ -208,7 +211,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
 }
 .scroll-card.vert:hover img{height:520px;}
 .scroll-card.vert.is-centered img{height:520px;}
-
+ 
 .scroll-card-label{
   padding:0.6rem 0.8rem;
   background:rgba(13,13,11,0.9);
@@ -216,19 +219,19 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
 }
 .scroll-code{font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);}
 .scroll-name{font-size:0.62rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
+ 
 /* LIGHTBOX */
 #lightbox{display:none;position:fixed;inset:0;background:rgba(13,13,11,0.97);z-index:8000;align-items:center;justify-content:center;flex-direction:column;}
 #lightbox.open{display:flex;}
 #lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;}
 .lb-close{position:absolute;top:2rem;right:2rem;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);cursor:none;background:none;border:none;}
 .lb-close:hover{color:var(--gold);}
-
+ 
 .clickable{cursor:none;}
 .clickable:hover{opacity:0.9;transition:opacity 0.2s;}
 .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
-
+ 
 @media(max-width:900px){
   nav{padding:1rem 1.5rem;}
   .nav-links{display:none;}
@@ -296,7 +299,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
-
+ 
 <!-- HOME -->
 <div id="home-page">
 <section id="home">
@@ -309,7 +312,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
     <a href="#projects" class="home-cta">View Selected Work &rarr;</a>
   </div>
 </section>
-
+ 
 <div class="filter-bar" id="projects">
   <span class="filter-label">Filter</span>
   <button class="filter-btn active" onclick="filterProjects('all',this)">All</button>
@@ -318,7 +321,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   <button class="filter-btn" onclick="filterProjects('thesis',this)">Thesis</button>
   <button class="filter-btn" onclick="filterProjects('recreational',this)">Recreational</button>
 </div>
-
+ 
 <div class="projects-grid">
   <div class="project-card reveal" data-cat="cultural" onclick="showProject('ecomuseo')">
     <img src="assets/eco_r0.webp" alt="Ecomuseo de los Andes">
@@ -365,7 +368,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
     <div class="card-arrow">&rarr;</div>
   </div>
 </div>
-
+ 
 <section id="about">
   <div class="about-left reveal">
     <span class="section-label">About</span>
@@ -399,7 +402,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
     </div>
   </div>
 </section>
-
+ 
 <section id="pipeline">
   <div class="pipeline-header">
     <span class="section-label">Methodology</span>
@@ -442,7 +445,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
     </div>
   </div>
 </section>
-
+ 
 <section id="contact">
   <div class="contact-left reveal">
     <span class="section-label">Contact</span>
@@ -468,7 +471,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   <span class="footer-copy">Universidad de Los Andes &mdash; M&eacute;rida, Venezuela</span>
 </footer>
 </div><!-- end home-page -->
-
+ 
 <!-- ECOMUSEO -->
 <div id="proj-ecomuseo" class="project-page">
   <div class="proj-hero">
@@ -583,7 +586,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   </section>
   <div style="display:flex;justify-content:space-between;padding:4rem;border-top:1px solid rgba(184,146,74,0.1);gap:2rem;"><div style="flex:1;"></div><button onclick="showProject('lbn')" style="flex:1;display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">Next &rarr;</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">LBN Las Buenas Nuevas</span></button></div>
 </div>
-
+ 
 <!-- LBN -->
 <div id="proj-lbn" class="project-page">
   <div class="proj-hero">
@@ -649,7 +652,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   </section>
   <div style="display:flex;justify-content:space-between;padding:4rem;border-top:1px solid rgba(184,146,74,0.1);gap:2rem;"><button onclick="showProject('ecomuseo')" style="flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">&larr; Previous</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">Ecomuseo de los Andes</span></button><button onclick="showProject('mediateca')" style="flex:1;display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">Next &rarr;</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">Parque Mediateca</span></button></div>
 </div>
-
+ 
 <!-- MEDIATECA -->
 <div id="proj-mediateca" class="project-page">
   <div class="proj-hero">
@@ -713,7 +716,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   </section>
   <div style="display:flex;justify-content:space-between;padding:4rem;border-top:1px solid rgba(184,146,74,0.1);gap:2rem;"><button onclick="showProject('lbn')" style="flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">&larr; Previous</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">LBN Las Buenas Nuevas</span></button><button onclick="showProject('santarosa')" style="flex:1;display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">Next &rarr;</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">Santa Rosa Linear Park</span></button></div>
 </div>
-
+ 
 <!-- SANTA ROSA -->
 <div id="proj-santarosa" class="project-page">
   <div class="proj-hero">
@@ -736,69 +739,85 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
     <a class="proj-nav-link" href="#sr-outcome">Outcome</a>
     <a class="proj-nav-link" href="#sr-technical">Technical</a>
   </nav>
+ 
+  <!-- 01 CONCEPT — sin imagen -->
   <section class="proj-section" id="sr-concept">
     <div class="proj-section-header"><span class="proj-section-num">01</span><h2 class="proj-section-title">Concept</h2></div>
     <p class="proj-section-text">The park is conceived as the terminus of the linear route that spans the study area. The concept of Art and Architecture is expressed through the placement of the ensemble's spaces, which integrate elements of Merida's culture such as sculpture and traditional gastronomy.</p>
     <p class="proj-section-text">The project amplifies the site's natural resources with the goal of promoting adventure tourism. For that reason, the material strategy is based on an immersive experience that balances architecture and landscape.</p>
   </section>
+ 
+  <!-- 02 OUTCOME — sliders alineados con etiquetas Before / After -->
   <section class="proj-section" id="sr-outcome">
-    <div class="proj-section-header"><span class="proj-section-num">03</span><h2 class="proj-section-title">Outcome</h2></div>
-    <p class="proj-section-text">The final output focuses on an AI-optimized visualization workflow, translating the project evolution into immersive before-and-after scenes and a final walkthrough video.</p>
+    <div class="proj-section-header"><span class="proj-section-num">02</span><h2 class="proj-section-title">Outcome</h2></div>
+    <p class="proj-section-text">AI-optimized visualization translating the project evolution into immersive before-and-after scenes and a final walkthrough video. Drag the handle to reveal each transformation.</p>
+ 
+    <!-- Aerial View -->
     <div class="compare-group">
       <div class="compare-label">Aerial View</div>
       <div class="before-after-slider" style="--reveal:50%;">
-        <img class="before-after-before" src="assets/vista-aerea-antes.webp" alt="Aerial view before">
-        <img class="before-after-after" src="assets/vista-aeres-despues.webp" alt="Aerial view after">
+        <img class="before-after-before" src="assets/vista-aerea-antes.webp" alt="Aerial view — before">
+        <img class="before-after-after" src="assets/vista-aeres-despues.webp" alt="Aerial view — after">
         <div class="before-after-handle"></div>
         <input class="before-after-range" type="range" min="0" max="100" value="50" aria-label="Aerial view comparison slider">
+        <span class="ba-tag ba-tag--before">Before</span>
+        <span class="ba-tag ba-tag--after">After</span>
       </div>
     </div>
+ 
+    <!-- Central Space -->
     <div class="compare-group">
       <div class="compare-label">Central Space</div>
       <div class="before-after-slider" style="--reveal:50%;">
-        <img class="before-after-before" src="assets/estancia-antes.webp" alt="Central space before">
-        <img class="before-after-after" src="assets/estancia-despues.webp" alt="Central space after">
+        <img class="before-after-before" src="assets/estancia-antes.webp" alt="Central space — before">
+        <img class="before-after-after" src="assets/estancia-despues.webp" alt="Central space — after">
         <div class="before-after-handle"></div>
         <input class="before-after-range" type="range" min="0" max="100" value="50" aria-label="Central space comparison slider">
+        <span class="ba-tag ba-tag--before">Before</span>
+        <span class="ba-tag ba-tag--after">After</span>
       </div>
     </div>
+ 
+    <!-- Video walkthrough -->
     <video class="proj-video" controls playsinline preload="metadata">
       <source src="assets/parque-santa-rosa.mp4" type="video/mp4">
     </video>
   </section>
-    <section class="proj-section" id="sr-technical">
-      <div class="proj-section-header"><span class="proj-section-num">04</span><h2 class="proj-section-title">Technical</h2></div>
-      <p class="proj-section-text">A horizontal sheet sequence presents the urban drawing, park plan, mobility study, and the section package in a scannable format.</p>
-      <div class="scroll-strip">
-        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
-          <img src="assets/A.urbano%20%281%29.webp" alt="Urban drawing">
-          <div class="scroll-card-label"><span class="scroll-code">A.urbano</span><span class="scroll-name">Urban drawing</span></div>
-        </div>
-        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
-          <img src="assets/A.06.1%20PLANTA%20PARQUE.webp" alt="Park plan">
-          <div class="scroll-card-label"><span class="scroll-code">A.06.1</span><span class="scroll-name">Park plan</span></div>
-        </div>
-        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
-          <img src="assets/A.MOBI%202.webp" alt="Mobility diagram">
-          <div class="scroll-card-label"><span class="scroll-code">A.MOBI</span><span class="scroll-name">Mobility diagram</span></div>
-        </div>
-        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
-          <img src="assets/A.07%20CORTES%202.webp" alt="Section 2">
-          <div class="scroll-card-label"><span class="scroll-code">A.07</span><span class="scroll-name">Sections 2</span></div>
-        </div>
-        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
-          <img src="assets/A.07%20CORTES%203.webp" alt="Section 3">
-          <div class="scroll-card-label"><span class="scroll-code">A.07</span><span class="scroll-name">Sections 3</span></div>
-        </div>
-        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
-          <img src="assets/A.07%20CORTES%204.webp" alt="Section 4">
-          <div class="scroll-card-label"><span class="scroll-code">A.07</span><span class="scroll-name">Sections 4</span></div>
-        </div>
+ 
+  <!-- 03 TECHNICAL — scroll lateral -->
+  <section class="proj-section" id="sr-technical">
+    <div class="proj-section-header"><span class="proj-section-num">03</span><h2 class="proj-section-title">Technical</h2></div>
+    <p class="proj-section-text">A horizontal sheet sequence presents the urban drawing, park plan, mobility study, and the section package in a scannable format. Hover to expand, click to view full size.</p>
+    <div class="scroll-strip">
+      <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+        <img src="assets/A.urbano%20%281%29.webp" alt="Urban drawing">
+        <div class="scroll-card-label"><span class="scroll-code">A.urbano</span><span class="scroll-name">Urban drawing</span></div>
       </div>
-    </section>
+      <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+        <img src="assets/A.06.1%20PLANTA%20PARQUE.webp" alt="Park plan">
+        <div class="scroll-card-label"><span class="scroll-code">A.06.1</span><span class="scroll-name">Park plan</span></div>
+      </div>
+      <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+        <img src="assets/A.MOBI%202.webp" alt="Mobility diagram">
+        <div class="scroll-card-label"><span class="scroll-code">A.MOBI</span><span class="scroll-name">Mobility diagram</span></div>
+      </div>
+      <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+        <img src="assets/A.07%20CORTES%202.webp" alt="Section 2">
+        <div class="scroll-card-label"><span class="scroll-code">A.07</span><span class="scroll-name">Sections 2</span></div>
+      </div>
+      <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+        <img src="assets/A.07%20CORTES%203.webp" alt="Section 3">
+        <div class="scroll-card-label"><span class="scroll-code">A.07</span><span class="scroll-name">Sections 3</span></div>
+      </div>
+      <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+        <img src="assets/A.07%20CORTES%204.webp" alt="Section 4">
+        <div class="scroll-card-label"><span class="scroll-code">A.07</span><span class="scroll-name">Sections 4</span></div>
+      </div>
+    </div>
+  </section>
   <div style="display:flex;justify-content:space-between;padding:4rem;border-top:1px solid rgba(184,146,74,0.1);gap:2rem;"><button onclick="showProject('mediateca')" style="flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">&larr; Previous</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">Parque Mediateca</span></button><button onclick="showProject('ecomuseo')" style="flex:1;display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">Next &rarr;</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">Ecomuseo de los Andes</span></button></div>
 </div>
-
+ 
 </div><!-- end main-site -->
 <script>
 const cursor=document.getElementById('cursor');
@@ -824,18 +843,18 @@ const sections=document.querySelectorAll('.proj-section');
 const navLinks=document.querySelectorAll('.proj-nav-link');
 const sectionObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const id=entry.target.id;navLinks.forEach(link=>link.classList.toggle('active',link.getAttribute('href')==='#'+id));}});},{threshold:0.3});
 sections.forEach(s=>sectionObserver.observe(s));
-
+ 
 const mobileScrollQuery=window.matchMedia('(max-width:900px)');
 let mobileScrollCleanup=[];
-
+ 
 function clamp(value,min,max){
   return Math.min(max,Math.max(min,value));
 }
-
+ 
 function easeInOutSine(value){
   return -(Math.cos(Math.PI*value)-1)/2;
 }
-
+ 
 function getClosestScrollCard(strip){
   const cards=Array.from(strip.querySelectorAll('.scroll-card'));
   if(!cards.length) return {cards:[],closestCard:null,centerX:0,activeRange:0};
@@ -844,7 +863,7 @@ function getClosestScrollCard(strip){
   const activeRange=Math.max(160,stripRect.width*0.56);
   let closestCard=null;
   let closestDistance=Infinity;
-
+ 
   cards.forEach(card=>{
     const rect=card.getBoundingClientRect();
     const cardCenter=rect.left+rect.width/2;
@@ -854,14 +873,14 @@ function getClosestScrollCard(strip){
       closestCard=card;
     }
   });
-
+ 
   return {cards,closestCard,centerX,activeRange};
 }
-
+ 
 function updateCenteredScrollCard(strip,settled=false){
   const {cards,closestCard,centerX,activeRange}=getClosestScrollCard(strip);
   if(!cards.length) return;
-
+ 
   cards.forEach(card=>{
     const rect=card.getBoundingClientRect();
     const cardCenter=rect.left+rect.width/2;
@@ -869,20 +888,20 @@ function updateCenteredScrollCard(strip,settled=false){
     const rawProgress=clamp(1-(distance/activeRange),0,1);
     const easedProgress=easeInOutSine(rawProgress);
     const previewProgress = Math.min(0.92,easedProgress);
-
+ 
     card.style.setProperty('--card-progress',String(previewProgress));
   });
 }
-
+ 
 function setupMobileScrollCentering(){
   mobileScrollCleanup.forEach(cleanup=>cleanup());
   mobileScrollCleanup=[];
-
+ 
   if(!mobileScrollQuery.matches) return;
-
+ 
   document.querySelectorAll('.scroll-strip').forEach(strip=>{
     let ticking=false;
-
+ 
     const handleScroll=()=>{
       if(ticking) return;
       ticking=true;
@@ -891,7 +910,7 @@ function setupMobileScrollCentering(){
         ticking=false;
       });
     };
-
+ 
     handleScroll();
     strip.addEventListener('scroll',handleScroll,{passive:true});
     window.addEventListener('resize',handleScroll);
@@ -903,9 +922,10 @@ function setupMobileScrollCentering(){
     });
   });
 }
-
+ 
 mobileScrollQuery.addEventListener('change',setupMobileScrollCentering);
 setupMobileScrollCentering();
 </script>
 </body>
 </html>
+ 
