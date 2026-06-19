@@ -137,6 +137,17 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
 .proj-section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;color:var(--paper);}
 .proj-section-text{max-width:700px;font-size:0.75rem;line-height:2.2;color:var(--muted);margin-bottom:3rem;}
 
+.compare-group{margin-bottom:3rem;}
+.compare-label{font-size:0.58rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.before-after-slider{position:relative;overflow:hidden;margin-bottom:2rem;background:#111;}
+.before-after-slider img{display:block;width:100%;height:auto;}
+.before-after-before{position:relative;z-index:1;}
+.before-after-after{position:absolute;inset:0;z-index:2;object-fit:cover;clip-path:inset(0 calc(100% - var(--reveal,50%)) 0 0);pointer-events:none;}
+.before-after-handle{position:absolute;top:0;bottom:0;left:var(--reveal,50%);z-index:3;width:2px;background:rgba(245,242,236,0.95);box-shadow:0 0 0 1px rgba(0,0,0,0.45);transform:translateX(-1px);pointer-events:none;}
+.before-after-handle::before{content:'';position:absolute;top:50%;left:50%;width:26px;height:26px;border-radius:50%;border:1px solid rgba(245,242,236,0.95);background:rgba(13,13,11,0.6);transform:translate(-50%,-50%);}
+.before-after-range{position:absolute;inset:0;z-index:4;width:100%;height:100%;opacity:0;cursor:ew-resize;-webkit-appearance:none;appearance:none;}
+.proj-video{width:100%;display:block;margin-bottom:2px;background:#000;}
+
 /* IMAGE LAYOUTS */
 .img-full{width:100%;aspect-ratio:21/9;object-fit:cover;display:block;margin-bottom:2px;}
 .img-auto{width:100%;height:auto;display:block;margin-bottom:2px;}
@@ -245,6 +256,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   .project-page > div[style*="justify-content:space-between"] > button{
     width:100%;
   }
+  .before-after-handle::before{width:20px;height:20px;}
   .scroll-card{
     flex:0 0 calc(110px + (var(--card-progress, 0) * 140px));
     transition:flex-basis 0.35s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.25s ease;
@@ -304,6 +316,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   <button class="filter-btn" onclick="filterProjects('cultural',this)">Cultural</button>
   <button class="filter-btn" onclick="filterProjects('civic',this)">Civic</button>
   <button class="filter-btn" onclick="filterProjects('thesis',this)">Thesis</button>
+  <button class="filter-btn" onclick="filterProjects('recreational',this)">Recreational</button>
 </div>
 
 <div class="projects-grid">
@@ -336,6 +349,17 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
         <div class="card-tag">Cultural &bull; 2024 &bull; &#127942; 1st Place Expoarq 2024</div>
         <h2 class="card-title">Parque Mediateca</h2>
         <div class="card-sub">M&eacute;rida, Venezuela &mdash; Form Exploration Award</div>
+      </div>
+    </div>
+    <div class="card-arrow">&rarr;</div>
+  </div>
+  <div class="project-card reveal" data-cat="recreational" onclick="showProject('santarosa')">
+    <img src="assets/vista-aeres-despues.webp" alt="Santa Rosa Linear Park">
+    <div class="card-overlay">
+      <div class="card-text-bg">
+        <div class="card-tag">Recreational &bull; 2024</div>
+        <h2 class="card-title">Santa Rosa Linear Park</h2>
+        <div class="card-sub">Ethnogastronomic Walk &mdash; AI-Driven Visualization Workflow</div>
       </div>
     </div>
     <div class="card-arrow">&rarr;</div>
@@ -687,7 +711,92 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
       <img class="img-half clickable" src="assets/mt_r10.webp" alt="Pasaje biblioteca" onclick="openLightbox(this.src)">
     </div>
   </section>
-  <div style="display:flex;justify-content:space-between;padding:4rem;border-top:1px solid rgba(184,146,74,0.1);gap:2rem;"><button onclick="showProject('lbn')" style="flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">&larr; Previous</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">LBN Las Buenas Nuevas</span></button><div style="flex:1;"></div></div>
+  <div style="display:flex;justify-content:space-between;padding:4rem;border-top:1px solid rgba(184,146,74,0.1);gap:2rem;"><button onclick="showProject('lbn')" style="flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">&larr; Previous</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">LBN Las Buenas Nuevas</span></button><button onclick="showProject('santarosa')" style="flex:1;display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">Next &rarr;</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">Santa Rosa Linear Park</span></button></div>
+</div>
+
+<!-- SANTA ROSA -->
+<div id="proj-santarosa" class="project-page">
+  <div class="proj-hero">
+    <img class="proj-hero-img" src="assets/vista-aeres-despues.webp" alt="Santa Rosa Linear Park">
+    <div class="proj-hero-overlay"></div>
+    <div class="proj-hero-content">
+      <a class="proj-back" href="#" onclick="showHome()">&larr; Back to Work</a>
+      <div class="proj-tag">Recreational Park &bull; Academic Project &bull; 2024</div>
+      <h1 class="proj-title">Santa Rosa Linear Park<br>Ethnogastronomic Walk</h1>
+      <div class="proj-meta">
+        <div class="proj-meta-item"><span class="proj-meta-label">Location</span><span class="proj-meta-value">Santa Rosa Sector, M&eacute;rida, Venezuela</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Role</span><span class="proj-meta-value">Sole Architect</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Workflow</span><span class="proj-meta-value">AI-Optimized Visualization</span></div>
+        <div class="proj-meta-item"><span class="proj-meta-label">Focus</span><span class="proj-meta-value">Linear Park Terminus</span></div>
+      </div>
+    </div>
+  </div>
+  <nav class="proj-nav">
+    <a class="proj-nav-link" href="#sr-concept">Concept</a>
+    <a class="proj-nav-link" href="#sr-outcome">Outcome</a>
+    <a class="proj-nav-link" href="#sr-technical">Technical</a>
+  </nav>
+  <section class="proj-section" id="sr-concept">
+    <div class="proj-section-header"><span class="proj-section-num">01</span><h2 class="proj-section-title">Concept</h2></div>
+    <p class="proj-section-text">The park is conceived as the terminus of the linear route that spans the study area. The concept of Art and Architecture is expressed through the placement of the ensemble's spaces, which integrate elements of Merida's culture such as sculpture and traditional gastronomy.</p>
+    <p class="proj-section-text">The project amplifies the site's natural resources with the goal of promoting adventure tourism. For that reason, the material strategy is based on an immersive experience that balances architecture and landscape.</p>
+  </section>
+  <section class="proj-section" id="sr-outcome">
+    <div class="proj-section-header"><span class="proj-section-num">03</span><h2 class="proj-section-title">Outcome</h2></div>
+    <p class="proj-section-text">The final output focuses on an AI-optimized visualization workflow, translating the project evolution into immersive before-and-after scenes and a final walkthrough video.</p>
+    <div class="compare-group">
+      <div class="compare-label">Aerial View</div>
+      <div class="before-after-slider" style="--reveal:50%;">
+        <img class="before-after-before" src="assets/vista-aerea-antes.webp" alt="Aerial view before">
+        <img class="before-after-after" src="assets/vista-aeres-despues.webp" alt="Aerial view after">
+        <div class="before-after-handle"></div>
+        <input class="before-after-range" type="range" min="0" max="100" value="50" aria-label="Aerial view comparison slider">
+      </div>
+    </div>
+    <div class="compare-group">
+      <div class="compare-label">Central Space</div>
+      <div class="before-after-slider" style="--reveal:50%;">
+        <img class="before-after-before" src="assets/estancia-antes.webp" alt="Central space before">
+        <img class="before-after-after" src="assets/estancia-despues.webp" alt="Central space after">
+        <div class="before-after-handle"></div>
+        <input class="before-after-range" type="range" min="0" max="100" value="50" aria-label="Central space comparison slider">
+      </div>
+    </div>
+    <video class="proj-video" controls playsinline preload="metadata">
+      <source src="assets/parque-santa-rosa.mp4" type="video/mp4">
+    </video>
+  </section>
+    <section class="proj-section" id="sr-technical">
+      <div class="proj-section-header"><span class="proj-section-num">04</span><h2 class="proj-section-title">Technical</h2></div>
+      <p class="proj-section-text">A horizontal sheet sequence presents the urban drawing, park plan, mobility study, and the section package in a scannable format.</p>
+      <div class="scroll-strip">
+        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A.urbano%20%281%29.webp" alt="Urban drawing">
+          <div class="scroll-card-label"><span class="scroll-code">A.urbano</span><span class="scroll-name">Urban drawing</span></div>
+        </div>
+        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A.06.1%20PLANTA%20PARQUE.webp" alt="Park plan">
+          <div class="scroll-card-label"><span class="scroll-code">A.06.1</span><span class="scroll-name">Park plan</span></div>
+        </div>
+        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A.MOBI%202.webp" alt="Mobility diagram">
+          <div class="scroll-card-label"><span class="scroll-code">A.MOBI</span><span class="scroll-name">Mobility diagram</span></div>
+        </div>
+        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A.07%20CORTES%202.webp" alt="Section 2">
+          <div class="scroll-card-label"><span class="scroll-code">A.07</span><span class="scroll-name">Sections 2</span></div>
+        </div>
+        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A.07%20CORTES%203.webp" alt="Section 3">
+          <div class="scroll-card-label"><span class="scroll-code">A.07</span><span class="scroll-name">Sections 3</span></div>
+        </div>
+        <div class="scroll-card" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="assets/A.07%20CORTES%204.webp" alt="Section 4">
+          <div class="scroll-card-label"><span class="scroll-code">A.07</span><span class="scroll-name">Sections 4</span></div>
+        </div>
+      </div>
+    </section>
+  <div style="display:flex;justify-content:space-between;padding:4rem;border-top:1px solid rgba(184,146,74,0.1);gap:2rem;"><button onclick="showProject('mediateca')" style="flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">&larr; Previous</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">Parque Mediateca</span></button><button onclick="showProject('ecomuseo')" style="flex:1;display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;background:none;border:1px solid rgba(184,146,74,0.2);padding:2rem;cursor:none;" onmouseover="this.style.borderColor='rgba(184,146,74,0.6)'" onmouseout="this.style.borderColor='rgba(184,146,74,0.2)'"><span style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#5a5650;">Next &rarr;</span><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#f5f2ec;">Ecomuseo de los Andes</span></button></div>
 </div>
 
 </div><!-- end main-site -->
@@ -703,6 +812,12 @@ function openLightbox(src){document.getElementById('lb-img').src=src;document.ge
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
 document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLightbox();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+document.querySelectorAll('.before-after-slider').forEach(slider=>{
+  const range=slider.querySelector('.before-after-range');
+  const update=()=>slider.style.setProperty('--reveal',`${range.value}%`);
+  range.addEventListener('input',update);
+  update();
+});
 const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 const sections=document.querySelectorAll('.proj-section');
