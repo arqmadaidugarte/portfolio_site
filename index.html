@@ -163,7 +163,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   flex:0 0 220px;
   position:relative;
   cursor:none;
-  transition:flex-basis 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.3s;
+  transition:flex-basis 0.35s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.25s ease;
   overflow:hidden;
   border:1px solid rgba(184,146,74,0.15);
 }
@@ -184,7 +184,7 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   height:280px;
   object-fit:cover;
   display:block;
-  transition:height 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition:height 0.35s cubic-bezier(0.22,0.61,0.36,1);
 }
 .scroll-card:hover img{height:400px;}
 .scroll-card.is-centered img{height:400px;}
@@ -231,12 +231,25 @@ footer{padding:2rem 4rem;border-top:1px solid rgba(184,146,74,0.1);display:flex;
   .pipeline-track::before{display:none;}
   #contact{flex-direction:column;gap:3rem;align-items:flex-start;}
   .grid-2{grid-template-columns:1fr;}
-  .scroll-card{flex-basis:140px;}
-  .scroll-card:hover{flex-basis:160px;}
-  .scroll-card.is-centered{flex-basis:min(64vw,260px);}
-  .scroll-card:hover img{height:240px;}
+  .scroll-card{
+    flex:0 0 calc(140px + (var(--card-progress, 0) * 92px));
+    transition:flex-basis 0.58s cubic-bezier(0.45,0,0.55,1), box-shadow 0.58s cubic-bezier(0.45,0,0.55,1), border-color 0.58s ease;
+  }
+  .scroll-card:hover{flex-basis:calc(140px + (var(--card-progress, 0) * 92px));}
+  .scroll-card.is-centered{--card-progress:1;flex-basis:min(64vw,260px);}
+  .scroll-card img{
+    height:calc(240px + (var(--card-progress, 0) * 52px));
+    transition:height 0.58s cubic-bezier(0.45,0,0.55,1);
+  }
+  .scroll-card:hover img{height:calc(240px + (var(--card-progress, 0) * 52px));}
   .scroll-card.is-centered img{height:320px;}
+  .scroll-card.vert img{height:calc(300px + (var(--card-progress, 0) * 78px));}
+  .scroll-card.vert:hover img{height:calc(300px + (var(--card-progress, 0) * 78px));}
   .scroll-card.vert.is-centered img{height:430px;}
+  .scroll-card.is-scrolling{will-change:flex-basis;}
+  .scroll-card,.clickable,.lb-close{cursor:auto;}
+  body{cursor:auto;}
+  #cursor{display:none;}
 }
 </style>
 </head>
@@ -689,13 +702,21 @@ sections.forEach(s=>sectionObserver.observe(s));
 
 const mobileScrollQuery=window.matchMedia('(max-width:900px)');
 let mobileScrollCleanup=[];
-let mobileScrollTimers=new WeakMap();
 
-function updateCenteredScrollCard(strip){
+function clamp(value,min,max){
+  return Math.min(max,Math.max(min,value));
+}
+
+function easeInOutSine(value){
+  return -(Math.cos(Math.PI*value)-1)/2;
+}
+
+function getClosestScrollCard(strip){
   const cards=Array.from(strip.querySelectorAll('.scroll-card'));
-  if(!cards.length) return;
+  if(!cards.length) return {cards:[],closestCard:null,centerX:0,activeRange:0};
   const stripRect=strip.getBoundingClientRect();
   const centerX=stripRect.left+stripRect.width/2;
+  const activeRange=Math.max(120,stripRect.width*0.42);
   let closestCard=null;
   let closestDistance=Infinity;
 
@@ -709,21 +730,27 @@ function updateCenteredScrollCard(strip){
     }
   });
 
-  cards.forEach(card=>card.classList.toggle('is-centered',card===closestCard));
+  return {cards,closestCard,centerX,activeRange};
 }
 
-function scheduleCenteredScrollCard(strip){
-  const previousTimer=mobileScrollTimers.get(strip);
-  if(previousTimer){
-    clearTimeout(previousTimer);
-  }
+function updateCenteredScrollCard(strip,settled=false){
+  const {cards,closestCard,centerX,activeRange}=getClosestScrollCard(strip);
+  if(!cards.length) return;
 
-  const nextTimer=setTimeout(()=>{
-    updateCenteredScrollCard(strip);
-    mobileScrollTimers.delete(strip);
-  },140);
+  cards.forEach(card=>card.classList.toggle('is-centered',settled && card===closestCard));
 
-  mobileScrollTimers.set(strip,nextTimer);
+  cards.forEach(card=>{
+    const rect=card.getBoundingClientRect();
+    const cardCenter=rect.left+rect.width/2;
+    const distance=Math.abs(cardCenter-centerX);
+    const rawProgress=clamp(1-(distance/activeRange),0,1);
+    const easedProgress=easeInOutSine(rawProgress);
+    const previewProgress = settled
+      ? (card===closestCard ? 1 : 0)
+      : (card===closestCard ? Math.min(0.84,easedProgress) : Math.min(0.22,easedProgress * 0.3));
+
+    card.style.setProperty('--card-progress',String(previewProgress));
+  });
 }
 
 function setupMobileScrollCentering(){
@@ -733,22 +760,25 @@ function setupMobileScrollCentering(){
   if(!mobileScrollQuery.matches) return;
 
   document.querySelectorAll('.scroll-strip').forEach(strip=>{
+    let ticking=false;
+
     const handleScroll=()=>{
-      scheduleCenteredScrollCard(strip);
+      if(ticking) return;
+      ticking=true;
+      requestAnimationFrame(()=>{
+        updateCenteredScrollCard(strip);
+        ticking=false;
+      });
     };
 
-    scheduleCenteredScrollCard(strip);
+    handleScroll();
     strip.addEventListener('scroll',handleScroll,{passive:true});
     window.addEventListener('resize',handleScroll);
     mobileScrollCleanup.push(()=>{
       strip.removeEventListener('scroll',handleScroll);
       window.removeEventListener('resize',handleScroll);
-      const timer=mobileScrollTimers.get(strip);
-      if(timer){
-        clearTimeout(timer);
-        mobileScrollTimers.delete(strip);
-      }
       strip.querySelectorAll('.scroll-card').forEach(card=>card.classList.remove('is-centered'));
+      strip.querySelectorAll('.scroll-card').forEach(card=>card.style.removeProperty('--card-progress'));
     });
   });
 }
